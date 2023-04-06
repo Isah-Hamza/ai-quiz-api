@@ -7,6 +7,30 @@ const bodyParser = require("body-parser");
 const authRouter = require("./routes/userRoute");
 const questionRouter = require("./routes/questionRoute");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "AI-Powered Quiz API",
+      version: "1.0.0"
+    },
+    // tags: [
+    //   {
+    //     name: "Authentication",
+    //     description: "Endpoints for User Authentication"
+    //   }
+    // ]
+  },
+  apis: ["./routes/*.js"] // replace with the path to your route files
+};
+
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 //routers
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));

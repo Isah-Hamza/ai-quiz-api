@@ -11,6 +11,7 @@ const questionSchema = new mongoose.Schema(
         {
           question: String,
           answer: String,
+          student_answer: String,
           tags: [String]
         }
       ],

@@ -1,3 +1,25 @@
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login user
+ *     description: User login endpoint
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ * /auth/register:
+ *   post:
+ *     summary: Register user
+ *     description: User Registration endpoint
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ */
+
 const express = require("express");
 const router = express.Router();
 const { hashPassword, comparePassword } = require("../utilities/functions");

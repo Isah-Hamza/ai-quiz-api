@@ -38,4 +38,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.post("/answers", async (req, res) => {
+  let data = {};
+  data.title = req.body.title;
+  data.student_answer = req.body.student_answer;
+  // const { _id } = data.qa;
+
+  try {
+    const questions = await Question.findOne({ title: data.title });
+    questions.qa.map((item1) => {
+      data.student_answer.map((item2) => {
+        if (item1._id == item2._id) {
+          item1.student_answer = item2.student_answer;
+          console.log("hi");
+        } else {
+          // item1.student_answer = item2.student_answer;
+        }
+      });
+    });
+    console.log(questions.qa);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
