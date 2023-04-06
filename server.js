@@ -4,13 +4,17 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const authRouter = require("./routes/userRoute");
+const questionRouter = require("./routes/questionRoute");
 
 //routers
-
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
+
+app.use("/auth", authRouter);
+app.use("/questions", questionRouter);
 
 const port = process.env.PORT || 5000;
 
