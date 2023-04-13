@@ -10,9 +10,10 @@ const questionSchema = new mongoose.Schema(
       type: [
         {
           question: String,
-          answer: String,
-          student_answer: String,
-          tags: [String]
+          correct_answer: String,
+          user_answer: String,
+          strict: Boolean,
+          keywords: Object
         }
       ],
       required: true
