@@ -78,7 +78,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/user/:id", async (req, res) => {
+router.get("/users/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const user = await User.findById(id);

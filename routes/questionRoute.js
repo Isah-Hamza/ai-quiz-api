@@ -3,6 +3,7 @@ const axios = require("axios");
 
 const router = express.Router();
 const Question = require("../models/questionModel");
+const User = require("../models/userModel");
 
 router.get("/", async (req, res) => {
   try {
@@ -27,6 +28,10 @@ router.post("/", async (req, res) => {
   let data = {};
   data.title = req.body.title;
   data.qa = req.body.qa;
+  data.lecturer = req.body.lecturer;
+  data.session = req.body.session;
+  data.instruction = req.body.instruction;
+  data.duration = req.body.duration;
 
   try {
     const question = new Question(data);
@@ -39,37 +44,53 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/:title", async (req, res) => {
+router.post("/:id", async (req, res) => {
   let data = {};
-  data.title = req.params.title;
+  data.id = req.params.id;
   data.answer = req.body.answer;
-  // const { _id } = data.qa;
-
-  let total_score = 0;
-  let question_count = 0;
+  const userId = req.body.id;
 
   try {
-    const questions = await Question.findOne({ title: data.title });
+    const questions = await Question.findById(data.id);
+
     questions.qa.map((item1) => {
+      delete item1.strict;
       question_count = questions.qa.length;
       data.answer.map((item2) => {
         if (item1._id == item2._id) {
           item1.user_answer = item2.user_answer;
-          item1.strict == item1.strict ?? false;
+          // item1.strict == item1.strict ?? false;
         }
       });
     });
 
+    const payload = {
+      answers: questions.qa,
+      strict: true,
+    };
+
+    console.log(payload);
+
     axios
-      .post("http://34.172.127.247:8080/get-score", questions.qa[0])
+      .post("http://34.172.127.247:8080/get-score-bulk", payload)
       .then((response) => {
+        // const user = User.findById(userId);
+
+        // user.courses = [
+        //   ...user.courses,
+        //   { ...questions, score: response.data.data },
+        // ];
+
+        // const updatedUser = User.findByIdAndUpdate(userId, user, { new: true });
+        // console.log(updatedUser)
+
         res.status(200).json({ result: response.data.data });
       })
       .catch((error) => {
         res.status(400).json({ error });
       });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(400).json({ error: { message: err.message } });
   }
 });

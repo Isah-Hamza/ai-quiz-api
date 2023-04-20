@@ -4,7 +4,23 @@ const questionSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true
+      required: true,
+    },
+    lecturer: {
+      type: String,
+      
+    },
+    duration: {
+      type: String,
+      required: false,
+    },
+    instruction: {
+      type: String,
+      required: false,
+    },
+    session: {
+      type: String,
+      required: false,
     },
     qa: {
       type: [
@@ -13,11 +29,11 @@ const questionSchema = new mongoose.Schema(
           correct_answer: String,
           user_answer: String,
           strict: Boolean,
-          keywords: Object
-        }
+          keywords: Object,
+        },
       ],
-      required: true
-    }
+      required: true,
+    },
   },
   { timestamps: true }
 );
