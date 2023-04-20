@@ -50,8 +50,41 @@ router.post("/:id", async (req, res) => {
   data.answer = req.body.answer;
   const userId = req.body.id;
 
+  const updateUser = async ({ user, questions, response }) => {
+    const all_courses = user.courses;
+
+    console.log(questions._id.toString());
+
+    const found = all_courses.find(
+      (course) => course._id.toString() == questions._id.toString()
+    );
+
+    if (found) {
+      return;
+    }
+
+    const new_course = {
+      _id: questions._id,
+      title: questions.title,
+      lecturer: questions.lecturer,
+      date: questions.updatedAt,
+      score: response.data.data,
+    };
+
+    let courses = [...user.courses, new_course];
+
+    await User.findByIdAndUpdate(
+      userId,
+      { courses },
+      {
+        new: true,
+      }
+    );
+  };
+
   try {
     const questions = await Question.findById(data.id);
+    const user = await User.findById(userId);
 
     questions.qa.map((item1) => {
       delete item1.strict;
@@ -69,28 +102,16 @@ router.post("/:id", async (req, res) => {
       strict: true,
     };
 
-    console.log(payload);
-
     axios
       .post("http://34.172.127.247:8080/get-score-bulk", payload)
       .then((response) => {
-        // const user = User.findById(userId);
-
-        // user.courses = [
-        //   ...user.courses,
-        //   { ...questions, score: response.data.data },
-        // ];
-
-        // const updatedUser = User.findByIdAndUpdate(userId, user, { new: true });
-        // console.log(updatedUser)
-
+        updateUser({ user, questions, response });
         res.status(200).json({ result: response.data.data });
       })
       .catch((error) => {
         res.status(400).json({ error });
       });
   } catch (err) {
-    // console.log(err);
     res.status(400).json({ error: { message: err.message } });
   }
 });

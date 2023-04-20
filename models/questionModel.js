@@ -8,7 +8,6 @@ const questionSchema = new mongoose.Schema(
     },
     lecturer: {
       type: String,
-      
     },
     duration: {
       type: String,
@@ -33,6 +32,10 @@ const questionSchema = new mongoose.Schema(
         },
       ],
       required: true,
+    },
+    score: {
+      type: Object,
+      required: false,
     },
   },
   { timestamps: true }
