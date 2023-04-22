@@ -32,6 +32,7 @@ router.post("/", async (req, res) => {
   data.session = req.body.session;
   data.instruction = req.body.instruction;
   data.duration = req.body.duration;
+  data.strict = req.body.strict;
 
   try {
     const question = new Question(data);

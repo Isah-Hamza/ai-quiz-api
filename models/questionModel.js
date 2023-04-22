@@ -33,6 +33,10 @@ const questionSchema = new mongoose.Schema(
       ],
       required: true,
     },
+    strict: {
+      type: Boolean,
+      required: false,
+    },
     score: {
       type: Object,
       required: false,
